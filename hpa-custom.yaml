@@ -1,0 +1,19 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: app-ligera-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: app-ligera
+  minReplicas: 2
+  maxReplicas: 15
+  metrics:
+  - type: Pods
+    pods:
+      metric:
+        name: http_requests_per_second # Esta es la métrica personalizada
+      target:
+        type: AverageValue
+        averageValue: "10" # Si un pod recibe más de 10 peticiones/seg, ¡ESCALA!
