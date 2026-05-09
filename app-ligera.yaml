@@ -4,11 +4,8 @@ metadata:
   name: app-ligera
   namespace: default
 spec:
-<<<<<<< HEAD
-  replicas: 1 # Manténlo en 1 por ahora
-=======
   replicas: 3 # Manténlo en 1 por ahora
->>>>>>> 09dfd90 (Configuración inicial y escalado de pods)
+#  replicas: 3 # Manténlo en 1 por ahora
   selector:
     matchLabels:
       app: web
