@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-ligera-service
+  name: app-ligera
   namespace: default
 spec:
   replicas: 1 # Manténlo en 1 por ahora
