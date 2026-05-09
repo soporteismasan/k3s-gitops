@@ -20,10 +20,6 @@ spec:
         backend:
           service:
             # IMPORTANTE: Este nombre debe ser IGUAL al de tu Service en el clúster
-<<<<<<< HEAD
             name: app-ligera
-=======
-            name: app-ligera 
->>>>>>> 09dfd90 (Configuración inicial y escalado de pods)
             port:
               number: 80
