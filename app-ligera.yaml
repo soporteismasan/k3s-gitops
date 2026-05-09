@@ -4,7 +4,7 @@ metadata:
   name: app-ligera
   namespace: default
 spec:
-  replicas: 3 # Manténlo en 1 por ahora
+  replicas: 30 # Manténlo en 1 por ahora
 #  replicas: 3 # Manténlo en 1 por ahora
   selector:
     matchLabels:
