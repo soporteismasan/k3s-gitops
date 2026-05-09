@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: laboratorio-devops
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/soporteismasan/k3s-gitops.git # <-- Cambia esto
+    targetRevision: HEAD
+    path: . # <-- La carpeta donde tienes tus archivos .yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true # Esto borrará Ollama si lo quitas de la carpeta
+      selfHeal: true

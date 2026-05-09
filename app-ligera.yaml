@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-ligera
+  namespace: default
+spec:
+<<<<<<< HEAD
+  replicas: 1 # Manténlo en 1 por ahora
+=======
+  replicas: 3 # Manténlo en 1 por ahora
+>>>>>>> 09dfd90 (Configuración inicial y escalado de pods)
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine # Esta imagen pesa solo 5MB (vuela)
+        ports:
+        - containerPort: 80
+        resources: # Esto limita el consumo para no fundir tu CPU
+          limits:
+            memory: "64Mi"
+            cpu: "100m"

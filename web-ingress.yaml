@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: acceso-web
+  namespace: default
+  annotations:
+    # Fuerza a que Traefik sea quien gestione esta ruta
+    kubernetes.io/ingress.class: traefik
+    # Opcional: permite que el tráfico sea redirigido correctamente
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+  # Si quieres usar un dominio (ej. mi-ia.test), descomenta la línea 'host' 
+  # y asegúrate de editar tu archivo /etc/hosts
+  - host: mi-ia.test 
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # IMPORTANTE: Este nombre debe ser IGUAL al de tu Service en el clúster
+<<<<<<< HEAD
+            name: app-ligera
+=======
+            name: app-ligera 
+>>>>>>> 09dfd90 (Configuración inicial y escalado de pods)
+            port:
+              number: 80
