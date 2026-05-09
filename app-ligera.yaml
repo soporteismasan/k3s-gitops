@@ -4,8 +4,7 @@ metadata:
   name: app-ligera
   namespace: default
 spec:
-  replicas: 30 # Manténlo en 1 por ahora
-#  replicas: 3 # Manténlo en 1 por ahora
+  # Borramos la línea de replicas, porque ahora el HPA mandará sobre este número
   selector:
     matchLabels:
       app: web
@@ -16,10 +15,13 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:alpine # Esta imagen pesa solo 5MB (vuela)
+        image: nginx:alpine
         ports:
         - containerPort: 80
-        resources: # Esto limita el consumo para no fundir tu CPU
-          limits:
+        resources:
+          requests:      # Lo que el pod reserva para empezar
+            memory: "32Mi"
+            cpu: "50m"
+          limits:        # El techo máximo que no puede pasar
             memory: "64Mi"
             cpu: "100m"
