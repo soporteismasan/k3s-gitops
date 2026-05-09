@@ -20,6 +20,6 @@ spec:
         backend:
           service:
             # IMPORTANTE: Este nombre debe ser IGUAL al de tu Service en el clúster
-            name: app-ligera-service
+            name: app-ligera
             port:
               number: 80
