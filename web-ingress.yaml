@@ -4,16 +4,22 @@ metadata:
   name: acceso-web
   namespace: default
   annotations:
-    # Esto le dice a K3s que use Traefik
+    # Fuerza a que Traefik sea quien gestione esta ruta
     kubernetes.io/ingress.class: traefik
+    # Opcional: permite que el tráfico sea redirigido correctamente
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
+  # Si quieres usar un dominio (ej. mi-ia.test), descomenta la línea 'host' 
+  # y asegúrate de editar tu archivo /etc/hosts
+  - host: mi-ia.test 
   - http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: ollama-service # <--- ASEGÚRATE QUE ESTE NOMBRE COINCIDA CON TU SVC
+            # IMPORTANTE: Este nombre debe ser IGUAL al de tu Service en el clúster
+            name: ollama-service 
             port:
               number: 80
