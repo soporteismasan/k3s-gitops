@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: acceso-web
+  namespace: default
+  annotations:
+    # Esto le dice a K3s que use Traefik
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ollama-service # <--- ASEGÚRATE QUE ESTE NOMBRE COINCIDA CON TU SVC
+            port:
+              number: 80
