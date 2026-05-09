@@ -1,12 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: default
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html index.htm;
+        }
+
+        # Activación de las estadísticas internas de Nginx
+        location /stub_status {
+            stub_status on;
+            access_log off;
+            allow 127.0.0.1;
+            deny all;
+        }
+    }
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app-ligera
   namespace: default
 spec:
-  # El número de réplicas ahora será gestionado por el HPA, 
-  # pero dejamos 2 como punto de partida.
-  replicas: 2 
+  replicas: 2
   selector:
     matchLabels:
       app: web
@@ -15,12 +38,13 @@ spec:
       labels:
         app: web
       annotations:
-        # Instrucciones para que Prometheus recoja datos del puerto 9113
+        # Crucial para que Prometheus encuentre este Pod automáticamente
         prometheus.io/scrape: "true"
         prometheus.io/port: "9113"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
-      # 1. CONTENEDOR PRINCIPAL: Nginx
+      # CONTENEDOR 1: Nginx (Tu App)
       - name: nginx
         image: nginx:alpine
         ports:
@@ -36,7 +60,7 @@ spec:
             cpu: "100m"
             memory: "64Mi"
 
-      # 2. CONTENEDOR SIDECAR: Exportador de métricas
+      # CONTENEDOR 2: Exporter (El "espía" de métricas)
       - name: exporter
         image: nginx/nginx-prometheus-exporter:latest
         args:
@@ -48,7 +72,6 @@ spec:
             cpu: "20m"
             memory: "32Mi"
 
-      # Volumen para inyectar la configuración del stub_status
       volumes:
       - name: config-volume
         configMap:
@@ -58,6 +81,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app-ligera
+  namespace: default
 spec:
   ports:
   - name: http
